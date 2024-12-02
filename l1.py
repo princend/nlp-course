@@ -19,6 +19,14 @@ def zero_shot_classification(
         candidate_labels=canditate_labels,
     )
     print(zeroshotanswer)
+
+
+def text_generation(text="In this course, we will teach you how to"):
+    generator = pipeline("text-generation")
+    res= generator(text)    
+    print(res)    
     
     
-zero_shot_classification()
+# sentiment_analysis()
+# zero_shot_classification()
+text_generation()
