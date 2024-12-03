@@ -77,6 +77,14 @@ def translation(text):
     traditional_text = converter.convert(translatoranswer[0]['translation_text'])
     print(traditional_text)
 
+## 會有偏見跟歧視文字產生
+def unmasker():
+    unmasker = pipeline("fill-mask", model="bert-base-uncased")
+    result = unmasker("This man works as a [MASK].")
+    print([r["token_str"] for r in result])
+
+    result = unmasker("This woman works as a [MASK].")
+    print([r["token_str"] for r in result])
 # sentiment_analysis()
 # zero_shot_classification()
 # EnglishTextGenerator().generate_text("I've been waiting for a HuggingFace course my whole life.")
@@ -85,6 +93,7 @@ def translation(text):
 # named_entity_recognition("My name is Wolfgang and I live in Berlin")
 # question_answering(context="My name is Wolfgang and I live in Berlin",question="What is my name?")
 # summarization("The Eiffel Tower is a wrought-iron lattice tower on the Champ de Mars in Paris, France. The tower is a global cultural icon of France and one of the most recognizable structures in the world.")
-translation("The Eiffel Tower is a wrought-iron lattice tower on the Champ de Mars in Paris, France. The tower is a global cultural icon of France and one of the most recognizable structures in the world.")
+# translation("The Eiffel Tower is a wrought-iron lattice tower on the Champ de Mars in Paris, France. The tower is a global cultural icon of France and one of the most recognizable structures in the world.")
 
+unmasker()
 
