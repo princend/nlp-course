@@ -13,6 +13,7 @@ def classfication():
     print(output)
 
 
+###auto 的意思代表你只要給字串 它會自動生出實例出來 不用自己產生實例
 def tokenizer():
     checkpoint = "distilbert-base-uncased-finetuned-sst-2-english"
     tokenizer = AutoTokenizer.from_pretrained(checkpoint)
