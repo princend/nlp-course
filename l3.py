@@ -1,6 +1,38 @@
 import torch
 from transformers import AdamW, AutoTokenizer, AutoModelForSequenceClassification, DataCollatorWithPadding
 from datasets   import load_dataset
+from transformers import TrainingArguments
+from transformers import Trainer
+
+
+def tokenize_function(example):
+    return tokenizer(example["sentence1"], example["sentence2"], truncation=True)    
+
+training_args = TrainingArguments("test-trainer")
+
+raw_datasets = load_dataset("glue", "mrpc")
+checkpoint = "bert-base-uncased"
+tokenizer = AutoTokenizer.from_pretrained(checkpoint)
+
+
+
+tokenized_datasets = raw_datasets.map(tokenize_function, batched=True)
+data_collator = DataCollatorWithPadding(tokenizer=tokenizer)
+
+model = AutoModelForSequenceClassification.from_pretrained(checkpoint, num_labels=2)
+
+trainer = Trainer(
+    model,
+    training_args,
+    train_dataset=tokenized_datasets["train"],
+    eval_dataset=tokenized_datasets["validation"],
+    data_collator=data_collator,
+    tokenizer=tokenizer,
+)
+
+trainer.train()
+predictions = trainer.predict(tokenized_datasets["validation"])
+print(predictions.predictions.shape, predictions.label_ids.shape)
 
 def processing_data():
 
@@ -61,11 +93,6 @@ def tokenize_multi_input():
     converted_sentence =tokenizer.convert_ids_to_tokens(inputs["input_ids"])
     print(converted_sentence)
     
-def tokenize_function(example):
-    checkpoint = "bert-base-uncased"
-    tokenizer = AutoTokenizer.from_pretrained(checkpoint)
-    return tokenizer(example["sentence1"], example["sentence2"], truncation=True)    
-
 
 def tokenize_batch():
     raw_datasets=load_dataset('glue','mrpc')

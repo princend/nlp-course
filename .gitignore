@@ -2,3 +2,5 @@
 .venv\*
 temp-weight
 temp-weight\*
+test-trainer\*
+test-trainer
